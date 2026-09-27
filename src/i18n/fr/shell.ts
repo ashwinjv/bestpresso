@@ -158,6 +158,7 @@ export const shell = {
   "shell.milkAssist.stepMilkTitle": "Ajoutez le lait",
   "shell.milkAssist.stepMilkInstruction": "Versez votre quantité habituelle de lait et reposez le pot sur la balance.",
   "shell.milkAssist.capture": "Capturer {grams} g",
+  "shell.milkAssist.useSaved": "Utiliser les {grams} g enregistrés",
   "shell.milkAssist.stable": "Stable",
   "shell.milkAssist.settling": "Stabilisation…",
   "shell.milkAssist.stepSteamTitle": "Faites mousser le lait",

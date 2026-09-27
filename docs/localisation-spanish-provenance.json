@@ -5672,6 +5672,11 @@
       "translation": "Vierte la leche habitual y vuelve a poner la jarra en la báscula.",
       "kind": "contextual"
     },
+    "shell.milkAssist.useSaved": {
+      "english": "Use saved {grams} g",
+      "translation": "Usar {grams} g guardados",
+      "kind": "contextual"
+    },
     "shell.milkAssist.capture": {
       "english": "Capture {grams} g",
       "translation": "Capturar {grams} g",

@@ -156,6 +156,7 @@ export const shell = {
   "shell.milkAssist.stepMilkTitle": "倒入牛奶",
   "shell.milkAssist.stepMilkInstruction": "倒入平时的牛奶量，再把奶缸放回秤上。",
   "shell.milkAssist.capture": "记录 {grams} 克",
+  "shell.milkAssist.useSaved": "使用已保存的 {grams} 克",
   "shell.milkAssist.stable": "稳定",
   "shell.milkAssist.settling": "正在稳定…",
   "shell.milkAssist.stepSteamTitle": "打奶泡",

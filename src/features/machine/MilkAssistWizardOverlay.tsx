@@ -89,7 +89,10 @@ export function MilkAssistWizardOverlay({ scaleGrams, scaleConnected, steamOpera
       <p>{t('shell.milkAssist.stepJugInstruction')}</p>
       <div className="milk-wizard__value">{scaleGrams !== undefined ? Math.round(scaleGrams) : '—'}<small>g</small></div>
       <span className={`milk-wizard__stability${stable !== null ? ' is-stable' : ''}`}>{stable !== null ? t('shell.milkAssist.stable') : t('shell.milkAssist.settling')}</span>
-      <button className="milk-wizard__primary" type="button" disabled={!scaleConnected || stable === null || stable <= 0} onClick={() => setState(wizardCaptureJug(stable!))}>{t('shell.milkAssist.capture', { grams: stable ?? '—' })}</button>
+      <div className="milk-wizard__actions">
+        {state.savedJugGrams !== null && <button className="milk-dialog__close" type="button" onClick={() => setState(wizardCaptureJug(state.savedJugGrams!))}>{t('shell.milkAssist.useSaved', { grams: state.savedJugGrams })}</button>}
+        <button className="milk-wizard__primary" type="button" disabled={!scaleConnected || stable === null || stable <= 0} onClick={() => setState(wizardCaptureJug(stable!))}>{t('shell.milkAssist.capture', { grams: stable ?? '—' })}</button>
+      </div>
     </div>}
     {state.step === 'milk' && <div className="milk-wizard__body">
       <h2 id="milk-wizard-title">{t('shell.milkAssist.stepMilkTitle')}</h2>
@@ -101,7 +104,7 @@ export function MilkAssistWizardOverlay({ scaleGrams, scaleConnected, steamOpera
     {state.step === 'steam' && <div className="milk-wizard__body">
       <h2 id="milk-wizard-title">{state.phase === 'captured' ? t('shell.milkAssist.captured') : t('shell.milkAssist.stepSteamTitle')}</h2>
       {state.phase === 'waiting' && <><p>{t('shell.milkAssist.stepSteamInstruction')}</p><span className="milk-wizard__stability">{t('shell.milkAssist.steamWaiting')}</span></>}
-      {state.phase === 'running' && <div className="milk-wizard__value milk-wizard__value--active">{state.elapsedSeconds.toFixed(1)}<small>s</small></div>}
+      {state.phase === 'running' && <div className="milk-wizard__value milk-wizard__value--active">{state.elapsedSeconds.toFixed(1)} <em>/</em> {STEAM_DURATION_MAX_S}<small>s</small></div>}
       {state.phase === 'captured' && <div className="milk-wizard__value">{t('shell.milkAssist.pair', { grams: state.milkGrams, seconds: state.elapsedSeconds })}</div>}
       {state.phase === 'tooShort' && <p className="milk-wizard__error">{t('shell.milkAssist.tooShort')}</p>}
       {state.phase === 'reachedMax' && <p className="milk-wizard__error">{t('shell.milkAssist.reachedMax')}</p>}

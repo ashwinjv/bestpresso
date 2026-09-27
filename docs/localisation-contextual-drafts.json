@@ -8634,6 +8634,16 @@
       ],
       "note": "Button to record the stable jug-plus-milk weight."
     },
+    "shell.milkAssist.useSaved": {
+      "english": "Use saved {grams} g",
+      "languages": [
+        "fr",
+        "it",
+        "zh-Hant",
+        "zh-Hans"
+      ],
+      "note": "Secondary button on wizard step 1 that advances with the previously saved jug weight instead of re-weighing."
+    },
     "shell.milkAssist.stable": {
       "english": "Stable",
       "languages": [

@@ -1,12 +1,12 @@
 import { MIN_CALIBRATION_SECONDS, STEAM_DURATION_MAX_S, milkGramsOnScale } from '../../domain/milkAssist.ts'
 
 export type WizardStep =
-  | { step: 'jug' }
+  | { step: 'jug'; savedJugGrams: number | null }
   | { step: 'milk'; jugGrams: number }
   | { step: 'steam'; jugGrams: number; milkGrams: number; phase: 'waiting' | 'running' | 'captured' | 'tooShort' | 'reachedMax'; elapsedSeconds: number }
 
 export function wizardInit(savedJugGrams: number | null): WizardStep {
-  return savedJugGrams === null ? { step: 'jug' } : { step: 'milk', jugGrams: savedJugGrams }
+  return { step: 'jug', savedJugGrams }
 }
 
 export function wizardCaptureJug(grams: number): WizardStep {

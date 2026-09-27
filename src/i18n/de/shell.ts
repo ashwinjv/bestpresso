@@ -187,6 +187,7 @@ export const shellDe = {
   'shell.milkAssist.stepMilkTitle': 'Milch einfüllen',
   'shell.milkAssist.stepMilkInstruction': 'Fülle die übliche Milchmenge ein und stelle die Kanne zurück auf die Waage.',
   'shell.milkAssist.capture': '{grams} g übernehmen',
+  'shell.milkAssist.useSaved': 'Gespeicherte {grams} g verwenden',
   'shell.milkAssist.stable': 'Stabil',
   'shell.milkAssist.settling': 'Beruhigt sich…',
   'shell.milkAssist.stepSteamTitle': 'Milch aufschäumen',

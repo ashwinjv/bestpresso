@@ -186,6 +186,7 @@ export const shellEn = {
   'shell.milkAssist.stepMilkTitle': 'Add the milk',
   'shell.milkAssist.stepMilkInstruction': 'Pour the milk you normally steam and put the jug back on the scale.',
   'shell.milkAssist.capture': 'Capture {grams} g',
+  'shell.milkAssist.useSaved': 'Use saved {grams} g',
   'shell.milkAssist.stable': 'Stable',
   'shell.milkAssist.settling': 'Settling…',
   'shell.milkAssist.stepSteamTitle': 'Steam your milk',

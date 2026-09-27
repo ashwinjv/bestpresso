@@ -2,9 +2,9 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { stableWeight, wizardCaptureJug, wizardCaptureMilk, wizardInit, wizardSteamEvent } from '../src/features/machine/milkAssistWizard.ts'
 
-test('wizard walks jug -> milk -> steam and skips jug when saved', () => {
-  assert.deepEqual(wizardInit(null), { step: 'jug' })
-  assert.deepEqual(wizardInit(412), { step: 'milk', jugGrams: 412 })
+test('wizard walks jug -> milk -> steam, offering a saved jug weight rather than skipping the step', () => {
+  assert.deepEqual(wizardInit(null), { step: 'jug', savedJugGrams: null })
+  assert.deepEqual(wizardInit(412), { step: 'jug', savedJugGrams: 412 })
   const milk = wizardCaptureJug(412)
   assert.deepEqual(milk, { step: 'milk', jugGrams: 412 })
   assert.deepEqual(wizardCaptureMilk(milk, 626), { step: 'steam', jugGrams: 412, milkGrams: 214, phase: 'waiting', elapsedSeconds: 0 })

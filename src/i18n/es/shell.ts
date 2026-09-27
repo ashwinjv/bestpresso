@@ -158,6 +158,7 @@ export const shell = {
   "shell.milkAssist.stepMilkTitle": "Añade la leche",
   "shell.milkAssist.stepMilkInstruction": "Vierte la leche habitual y vuelve a poner la jarra en la báscula.",
   "shell.milkAssist.capture": "Capturar {grams} g",
+  "shell.milkAssist.useSaved": "Usar {grams} g guardados",
   "shell.milkAssist.stable": "Estable",
   "shell.milkAssist.settling": "Estabilizando…",
   "shell.milkAssist.stepSteamTitle": "Vaporiza la leche",
