@@ -17,19 +17,38 @@ interface Props {
 export function MilkAssistWizardOverlay({ scaleGrams, scaleConnected, steamOperationActive, steamElapsedSeconds, currentDurationSeconds, onWriteDuration, onClose }: Props) {
   const [state, setState] = useState<WizardStep>(() => wizardInit(readMilkAssist().jugGrams))
   const samples = useRef<{ grams: number; atMs: number }[]>([])
+  const scaleGramsRef = useRef(scaleGrams)
   const restoreSeconds = useRef<number | null>(null)
+  const wroteSafetyNet = useRef(false)
   const [, forceTick] = useState(0)
 
   useEffect(() => {
-    if (scaleGrams === undefined) return
-    samples.current = [...samples.current.filter((sample) => sample.atMs > Date.now() - 5_000), { grams: scaleGrams, atMs: Date.now() }]
-    forceTick((tick) => tick + 1)
+    scaleGramsRef.current = scaleGrams
   }, [scaleGrams])
 
+  // Seeds from any restore value a prior mount already persisted, so an unmount (sleep, live brew) mid-flow does not lose it.
   useEffect(() => {
-    if (state.step !== 'steam' || state.phase !== 'waiting' || restoreSeconds.current !== null) return
-    restoreSeconds.current = currentDurationSeconds ?? null
-    writeMilkAssist({ pendingRestoreSeconds: currentDurationSeconds })
+    restoreSeconds.current = readMilkAssist().pendingRestoreSeconds
+  }, [])
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const grams = scaleGramsRef.current
+      if (grams === undefined) return
+      const now = Date.now()
+      samples.current = [...samples.current.filter((sample) => sample.atMs > now - 5_000), { grams, atMs: now }]
+      forceTick((tick) => tick + 1)
+    }, 250)
+    return () => window.clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    if (state.step !== 'steam' || state.phase !== 'waiting' || wroteSafetyNet.current) return
+    wroteSafetyNet.current = true
+    if (restoreSeconds.current === null) {
+      restoreSeconds.current = currentDurationSeconds ?? null
+      writeMilkAssist({ pendingRestoreSeconds: currentDurationSeconds })
+    }
     onWriteDuration(STEAM_DURATION_MAX_S)
   }, [state, currentDurationSeconds, onWriteDuration])
 
