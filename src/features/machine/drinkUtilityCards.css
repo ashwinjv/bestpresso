@@ -161,3 +161,24 @@
 @media(prefers-reduced-motion:reduce) {
   .app-shell .utility-card.drink-card,.drink-card *,.drink-card *::before,.drink-card *::after {transition:none!important;animation:none!important}
 }
+.milk-pill {display:flex;align-items:center;gap:12px;margin:14px 12px 4px;height:52px;padding:0 8px 0 16px;border:1px solid var(--card-outline,rgba(255,255,255,.09));border-radius:26px;background:rgba(30,27,25,.55)}
+.milk-pill__dot {width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#53d68e;box-shadow:0 0 8px rgba(83,214,142,.8);animation:milk-pill-pulse 1.6s ease-in-out infinite}
+html[data-animations="off"] .milk-pill__dot {animation:none}
+@keyframes milk-pill-pulse {50% {opacity:.35}}
+.milk-pill__reading {display:flex;align-items:baseline;gap:7px}
+.milk-pill__label {color:#a9a29a;font-size:14px;font-weight:500}
+.milk-pill__value {color:var(--metric-value-color);font-size:20px;font-weight:300;font-variant-numeric:tabular-nums}
+.milk-pill__value small {margin-left:1px;font-size:13px;font-weight:400;color:#bdb6ae}
+.milk-pill__arrow {color:#8f8a84;font-size:14px}
+.milk-pill__set {margin-left:auto;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 18px;border:2px solid #e96d6d;border-radius:20px;color:#fff;background:rgba(233,109,109,.14);font-size:15px;font-weight:650;font-variant-numeric:tabular-nums}
+.milk-pill__set:hover:not(:disabled) {background:rgba(233,109,109,.24)}
+.milk-pill__set:disabled {opacity:.38;cursor:not-allowed}
+.milk-pill__set--saved {border-color:#3dc078;color:#53d68e;background:rgba(61,192,120,.14)}
+.milk-pill__set:focus-visible,.milk-pill__tuner:focus-visible,.milk-pill__cta:focus-visible {outline:2px solid #53d68e;outline-offset:3px}
+.milk-pill__tuner {flex:0 0 40px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(62,60,59,.72);color:#cfc9c2;display:inline-flex;align-items:center;justify-content:center}
+.milk-pill__tuner:hover:not(:disabled) {background:rgba(84,80,76,.85)}
+.milk-pill--idle .milk-pill__tuner,.milk-pill--setup .milk-pill__cta {margin-left:auto}
+.milk-pill__cta {display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 18px;border:1px solid rgba(255,255,255,.16);border-radius:20px;color:#d8d8d8;background:rgba(62,60,59,.72);font-size:14px;font-weight:600}
+[data-theme="light"] .milk-pill {background:rgba(255,255,255,.5)}
+[data-theme="light"] .milk-pill__label,[data-theme="light"] .milk-pill__arrow {color:#637265}
+[data-theme="light"] .milk-pill__value {color:#23382d}

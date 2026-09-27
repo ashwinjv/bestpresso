@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { useStableEvent } from '../utils/useStableEvent'
 import cleaning from '../assets/figma/cleaning-profile.svg'
 import logo from '../assets/figma/decent-logo.png'
@@ -11,6 +11,7 @@ import { FullscreenToggle } from '../components/FullscreenToggle/FullscreenToggl
 import { LayoutDiagnostics } from '../components/LayoutDiagnostics/LayoutDiagnostics'
 import { isCleaningProfile } from '../api/decaid/adapters'
 import type { AvailableScale, BrewProfile, BrewingScreenModel, DataConnection, EditableMachineSetting, EditableProfileSetting, LiveBrewState, LiveUtilityOperation, PreviousShotStatus, ScaleConnection, SettingFeedback } from '../domain/brewing'
+import { savedStateHolds, milkAssistPillState, milkGramsOnScale } from '../domain/milkAssist'
 import { t } from '../i18n/index.ts'
 import { BrewingPanel } from '../features/brew/BrewingPanel'
 import { LiveBrewingScreen } from '../features/brew/LiveBrewingScreen'
@@ -18,6 +19,8 @@ import { CleaningSequencePicker } from '../features/cleaning/CleaningSequencePic
 import { HistoryPanel } from '../features/history/HistoryPanel'
 import { MachineUtilityCard } from '../features/machine/MachineUtilityCard'
 import { LiveUtilityOperationOverlay } from '../features/machine/LiveUtilityOperationOverlay'
+import { useMilkAssist } from '../features/machine/milkAssistStore'
+import type { MilkAssistPillProps } from '../features/machine/MilkAssistPill'
 import { ScaleDevicePicker } from '../features/machine/ScaleDevicePicker'
 import { SleepWakeScreen } from '../features/sleep/SleepWakeScreen'
 
@@ -104,6 +107,29 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
   const dismissCleaningPicker = async () => {
     if (await onCancelCleaning()) setCleaningPickerOpen(false)
   }
+  const { milkAssist } = useMilkAssist()
+  const scaleUtility = model.utilities.find((utility) => utility.id === 'scale')
+  const scaleGramsRaw = Number(scaleUtility?.metrics[0]?.value?.replaceAll(',', ''))
+  const scaleGrams = Number.isFinite(scaleGramsRaw) ? scaleGramsRaw : undefined
+  const scaleConnected = scale?.status === 'connected'
+  const [milkSaved, setMilkSaved] = useState<{ seconds: number; atMilkGrams: number } | null>(null)
+  const pillState = milkAssistPillState({ enabled: milkAssist.enabled, scaleConnected, scaleGrams, jugGrams: milkAssist.jugGrams, calGrams: milkAssist.calGrams, calSeconds: milkAssist.calSeconds })
+  const currentMilkGrams = milkGramsOnScale(scaleGrams, milkAssist.jugGrams)
+  useEffect(() => {
+    if (milkSaved && (currentMilkGrams === null || !savedStateHolds(milkSaved.atMilkGrams, currentMilkGrams))) setMilkSaved(null)
+  }, [currentMilkGrams, milkSaved])
+  const [milkAssistSurface, setMilkAssistSurface] = useState<'none' | 'dialog' | 'wizard'>('none')
+  void milkAssistSurface
+  const milkAssistPill: MilkAssistPillProps | undefined = pillState.kind === 'hidden' ? undefined : {
+    state: pillState,
+    savedSeconds: milkSaved?.seconds ?? null,
+    disabled: settingsDisabled,
+    onSet: (seconds) => {
+      updateSetting('steamDuration', seconds)
+      if (pillState.kind === 'live') setMilkSaved({ seconds, atMilkGrams: pillState.milkGrams })
+    },
+    onCalibrate: () => setMilkAssistSurface(milkAssist.calGrams === null || milkAssist.jugGrams === null ? 'wizard' : 'dialog'),
+  }
   if (sleepScreenActive) return <SleepWakeScreen onWake={onWake} />
   if (liveBrew.visible && !utilityOperation) return <LiveBrewingScreen model={model} liveBrew={liveBrew} stopPending={brewStopPending} skipPending={brewSkipPending} actionError={machineActionError} onStop={onStopEspresso} onSkipStage={onSkipBrewStage} onDismiss={onDismissLiveBrew} />
   return <main className={`app-shell${utilitiesCollapsed ? ' app-shell--utilities-collapsed' : ''}${utilityLayoutHasChanged ? ' app-shell--utility-layout-transitioned' : ''}`}>
@@ -113,7 +139,7 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
       {machineActionError && <div className="system-message system-message--error" role="alert">{machineActionError}</div>}
       {settingFeedback && <div className={`system-message system-message--${settingFeedback.status}`} role={settingFeedback.status === 'error' ? 'alert' : 'status'} aria-live="polite">{settingFeedback.message}</div>}
     </div>}
-    <div className="dashboard"><aside className="utilities" id="machine-utilities">{model.utilities.map((utility) => <MachineUtilityCard key={utility.id} utility={utility} compact={utilitiesCollapsed} scale={utility.id === 'scale' ? scale : undefined} scaleTarePending={utility.id === 'scale' && scaleTarePending} scaleTareDisabled={utility.id === 'scale' && scaleTareDisabled} onExpand={utility.id === 'tank' ? undefined : toggleUtilityLayout} onSearchScale={utility.id === 'scale' ? searchScale : undefined} onTareScale={utility.id === 'scale' ? tareScale : undefined} settingsDisabled={settingsDisabled} onUpdateSetting={updateSetting} />)}</aside><div className="primary"><BrewingPanel profiles={model.profiles} activeProfileId={model.activeProfileId} settingsDisabled={settingsDisabled} demoMode={demoPullEnabled} onUpdateProfile={updateProfile} onSelectProfile={selectProfile} onStartDemoBrew={startDemo} onManageProfiles={manageProfiles} />{historyEntry ?? <HistoryPanel shot={model.previousShot} status={previousShotStatus} onOpen={onOpenPreviousShot} />}</div></div>
+    <div className="dashboard"><aside className="utilities" id="machine-utilities">{model.utilities.map((utility) => <MachineUtilityCard key={utility.id} utility={utility} compact={utilitiesCollapsed} scale={utility.id === 'scale' ? scale : undefined} scaleTarePending={utility.id === 'scale' && scaleTarePending} scaleTareDisabled={utility.id === 'scale' && scaleTareDisabled} onExpand={utility.id === 'tank' ? undefined : toggleUtilityLayout} onSearchScale={utility.id === 'scale' ? searchScale : undefined} onTareScale={utility.id === 'scale' ? tareScale : undefined} settingsDisabled={settingsDisabled} onUpdateSetting={updateSetting} milkAssist={utility.id === 'steam' ? milkAssistPill : undefined} />)}</aside><div className="primary"><BrewingPanel profiles={model.profiles} activeProfileId={model.activeProfileId} settingsDisabled={settingsDisabled} demoMode={demoPullEnabled} onUpdateProfile={updateProfile} onSelectProfile={selectProfile} onStartDemoBrew={startDemo} onManageProfiles={manageProfiles} />{historyEntry ?? <HistoryPanel shot={model.previousShot} status={previousShotStatus} onOpen={onOpenPreviousShot} />}</div></div>
     {utilityOperation && <LiveUtilityOperationOverlay operation={utilityOperation} />}
     <ScaleDevicePicker devices={availableScales} pendingDeviceId={scaleConnectPendingId} onSelect={onConnectScale} onDismiss={onDismissScalePicker} />
     {cleaningPickerOpen && <CleaningSequencePicker profiles={cleaningProfiles} pending={cleaningStartPending} preparedProfileId={cleaningPreparedProfileId} onPrepare={onPrepareCleaning} onDismiss={dismissCleaningPicker} />}

@@ -37,3 +37,7 @@ export function milkAssistPillState(input: { enabled: boolean; scaleConnected: b
   if (suggestedSeconds === null) return { kind: 'idle' }
   return { kind: 'live', milkGrams, suggestedSeconds }
 }
+
+export function savedStateHolds(savedAtMilkGrams: number, currentMilkGrams: number): boolean {
+  return Math.abs(currentMilkGrams - savedAtMilkGrams) <= SAVED_REVERT_THRESHOLD_G
+}

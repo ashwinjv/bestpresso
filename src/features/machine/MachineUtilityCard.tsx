@@ -13,6 +13,7 @@ import { formatNumber, t, useLanguage } from '../../i18n/index.ts'
 import { scalePresentationForDevice } from './scaleArtwork'
 import { steamTargetForToggle } from './steamHeating'
 import { DrinkUtilityCard } from './DrinkUtilityCard'
+import type { MilkAssistPillProps } from './MilkAssistPill'
 
 const withoutGenericScaleSuffix = (name: string | undefined) => {
   const title = name?.replace(/\s+scale$/i, '').trim()
@@ -30,6 +31,7 @@ interface MachineUtilityCardProps {
   scaleTareDisabled?: boolean
   settingsDisabled?: boolean
   onUpdateSetting?: (setting: EditableMachineSetting, value: number) => void
+  milkAssist?: MilkAssistPillProps
 }
 
 const editForMetric = (utility: MachineUtility, metricId: UtilityMetricId, temperatureUnit: TemperatureUnit, onSave?: (setting: EditableMachineSetting, value: number) => void, disabled?: boolean) => {
@@ -64,7 +66,7 @@ const editForMetric = (utility: MachineUtility, metricId: UtilityMetricId, tempe
   }
 }
 
-function MachineUtilityCardComponent({ utility, compact = false, scale, onExpand, onSearchScale, onTareScale, scaleTarePending = false, scaleTareDisabled = false, settingsDisabled, onUpdateSetting }: MachineUtilityCardProps) {
+function MachineUtilityCardComponent({ utility, compact = false, scale, onExpand, onSearchScale, onTareScale, scaleTarePending = false, scaleTareDisabled = false, settingsDisabled, onUpdateSetting, milkAssist }: MachineUtilityCardProps) {
   useLanguage()
   const { preferences } = useBestpressoPreferences()
   const temperatureUnit = preferences.temperatureUnit
@@ -110,6 +112,7 @@ function MachineUtilityCardComponent({ utility, compact = false, scale, onExpand
     onExpand={onExpand} disabled={settingsDisabled || !onUpdateSetting}
     getEdit={metricId => editForMetric(utility, metricId, temperatureUnit, onUpdateSetting, settingsDisabled)}
     onToggleSteam={() => onUpdateSetting?.('steamTemperature', steamTargetForToggle(!steamHeatingEnabled, steamTarget))}
+    milkAssist={utility.id === 'steam' ? milkAssist : undefined}
   />
   const cardClassName = `utility-card utility-card--scale${compact ? ' utility-card--compact' : ''}${scalePresentation?.imageSrc ? ' utility-card--scale-with-art' : ''}`
   const expandLabel = t('shell.machine.expandToView', { label: title })

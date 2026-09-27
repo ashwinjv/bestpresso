@@ -9,6 +9,7 @@ import { displayUtilityMetric, utilityLabel, utilityMetricLabel } from '../../do
 import { formatTemperatureValue, temperatureBoundToDisplay, type TemperatureUnit } from '../../domain/temperature'
 import { VALUE_ADJUSTMENTS } from '../../domain/valueAdjustments'
 import { t } from '../../i18n/index.ts'
+import { MilkAssistPill, type MilkAssistPillProps } from './MilkAssistPill'
 import { TemperatureReading } from './TemperatureReading'
 import { useHomeAnimations } from '../settings/useHomeAnimations'
 import { GAUGE_MIN_C, GAUGE_CENTER, GAUGE_RADIUS, gaugeArcPath, gaugeFraction, gaugeGeometry, gaugeLayout, steamBelowReadyRange } from './steamGauge'
@@ -22,9 +23,10 @@ interface Props {
   onExpand?: () => void
   onToggleSteam: () => void
   getEdit: (metricId: UtilityMetricId) => MetricEdit | undefined
+  milkAssist?: MilkAssistPillProps
 }
 
-export function DrinkUtilityCard({ utility, metrics, compact, temperatureUnit, disabled, onExpand, onToggleSteam, getEdit }: Props) {
+export function DrinkUtilityCard({ utility, metrics, compact, temperatureUnit, disabled, onExpand, onToggleSteam, getEdit, milkAssist }: Props) {
   const openAdjustment = useValueAdjustment()
   const steam = utility.id === 'steam'
   const animationsEnabled = useHomeAnimations()
@@ -95,6 +97,7 @@ export function DrinkUtilityCard({ utility, metrics, compact, temperatureUnit, d
           </div>
           </div>
           <div className="drink-card__steam-secondary"><div>{displayMetric('flow')}</div><div>{displayMetric('duration', utilityMetricLabel('maxDuration'))}</div></div>
+          {steam && milkAssist && <MilkAssistPill {...milkAssist} />}
         </div>}
     </div>
   </section>
