@@ -182,3 +182,8 @@ html[data-animations="off"] .milk-pill__dot {animation:none}
 [data-theme="light"] .milk-pill {background:rgba(255,255,255,.5)}
 [data-theme="light"] .milk-pill__label,[data-theme="light"] .milk-pill__arrow {color:#637265}
 [data-theme="light"] .milk-pill__value {color:#23382d}
+[data-theme="light"] .milk-pill__set {border-color:#dca89a;color:#9d3430;background:#fff0e9}
+[data-theme="light"] .milk-pill__set:hover:not(:disabled) {background:#ffe1d3}
+[data-theme="light"] .milk-pill__set--saved {border-color:#589672;color:#175f3c;background:#d4e8d7}
+[data-theme="light"] .milk-pill__tuner,[data-theme="light"] .milk-pill__cta {background:#e0e7dc;color:#375040;border-color:#bdcdbc}
+[data-theme="light"] .milk-pill__tuner:hover:not(:disabled) {background:#d1dace}
