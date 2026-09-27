@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useStableEvent } from '../utils/useStableEvent'
 import cleaning from '../assets/figma/cleaning-profile.svg'
 import logo from '../assets/figma/decent-logo.png'
@@ -19,9 +19,10 @@ import { CleaningSequencePicker } from '../features/cleaning/CleaningSequencePic
 import { HistoryPanel } from '../features/history/HistoryPanel'
 import { MachineUtilityCard } from '../features/machine/MachineUtilityCard'
 import { LiveUtilityOperationOverlay } from '../features/machine/LiveUtilityOperationOverlay'
-import { useMilkAssist } from '../features/machine/milkAssistStore'
+import { readMilkAssist, useMilkAssist, writeMilkAssist } from '../features/machine/milkAssistStore'
 import type { MilkAssistPillProps } from '../features/machine/MilkAssistPill'
 import { MilkAssistDialog } from '../features/machine/MilkAssistDialog'
+import { MilkAssistWizardOverlay } from '../features/machine/MilkAssistWizardOverlay'
 import { ScaleDevicePicker } from '../features/machine/ScaleDevicePicker'
 import { SleepWakeScreen } from '../features/sleep/SleepWakeScreen'
 
@@ -120,6 +121,20 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
     if (milkSaved && (currentMilkGrams === null || !savedStateHolds(milkSaved.atMilkGrams, currentMilkGrams))) setMilkSaved(null)
   }, [currentMilkGrams, milkSaved])
   const [milkAssistSurface, setMilkAssistSurface] = useState<'none' | 'dialog' | 'wizard'>('none')
+  const steamOperationActive = utilityOperation?.kind === 'steam'
+  const steamElapsedSeconds = steamOperationActive ? utilityOperation.elapsedMs / 1000 : 0
+  const steamUtility = model.utilities.find((utility) => utility.id === 'steam')
+  const currentDurationSeconds = Number(steamUtility?.metrics.find((metric) => metric.id === 'duration')?.value) || null
+  const restoredRef = useRef(false)
+  useEffect(() => {
+    if (restoredRef.current || settingsDisabled) return
+    const pending = readMilkAssist().pendingRestoreSeconds
+    if (pending !== null) {
+      updateSetting('steamDuration', pending)
+      writeMilkAssist({ pendingRestoreSeconds: null })
+    }
+    restoredRef.current = true
+  }, [settingsDisabled, updateSetting])
   const milkAssistPill: MilkAssistPillProps | undefined = pillState.kind === 'hidden' ? undefined : {
     state: pillState,
     savedSeconds: milkSaved?.seconds ?? null,
@@ -144,5 +159,11 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
     <ScaleDevicePicker devices={availableScales} pendingDeviceId={scaleConnectPendingId} onSelect={onConnectScale} onDismiss={onDismissScalePicker} />
     {cleaningPickerOpen && <CleaningSequencePicker profiles={cleaningProfiles} pending={cleaningStartPending} preparedProfileId={cleaningPreparedProfileId} onPrepare={onPrepareCleaning} onDismiss={dismissCleaningPicker} />}
     {milkAssistSurface === 'dialog' && <MilkAssistDialog onClose={() => setMilkAssistSurface('none')} onRecalibrate={() => setMilkAssistSurface('wizard')} />}
+    {milkAssistSurface === 'wizard' && <MilkAssistWizardOverlay
+      scaleGrams={scaleGrams} scaleConnected={scaleConnected}
+      steamOperationActive={steamOperationActive} steamElapsedSeconds={steamElapsedSeconds}
+      currentDurationSeconds={currentDurationSeconds}
+      onWriteDuration={(seconds) => updateSetting('steamDuration', seconds)}
+      onClose={() => setMilkAssistSurface('none')} />}
   </main>
 }

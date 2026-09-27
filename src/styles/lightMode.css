@@ -19,7 +19,7 @@
   background:#f4f5ef;
   color:#37463d;
 }
-[data-theme="light"] :is(.app-shell,.profiles-screen,.history-browser-screen,.profile-builder-screen,.settings-screen,.value-adjuster) {
+[data-theme="light"] :is(.app-shell,.profiles-screen,.history-browser-screen,.profile-builder-screen,.settings-screen,.value-adjuster,.milk-wizard) {
   background:radial-gradient(ellipse at 0 0,#fdfefa,transparent 65%),linear-gradient(125deg,#f4f6ef,#f0ede6);
   color:#23382d;
 }
