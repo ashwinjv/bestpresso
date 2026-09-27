@@ -209,4 +209,4 @@ html[data-animations="off"] .milk-pill__dot {animation:none}
 [data-theme="light"] .milk-dialog__row strong small {color:#7a847a}
 [data-theme="light"] .milk-dialog__close {border-color:#c4cdc3;color:#40523f;background:#e0e7dc}
 [data-theme="light"] .milk-dialog__recalibrate {border-color:#589672;color:#175f3c;background:#d4e8d7}
-[data-theme="light"] .milk-dialog__close:focus-visible,.milk-dialog__recalibrate:focus-visible {outline:2px solid #467b51}
+[data-theme="light"] .milk-dialog__close:focus-visible,[data-theme="light"] .milk-dialog__recalibrate:focus-visible {outline:2px solid #467b51}
