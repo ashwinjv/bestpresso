@@ -116,6 +116,8 @@ export const settings = {
   "settings.prepare.steam.temperatureHint": "Apagado, o {min}–{max}{unit}",
   "settings.prepare.hotWater.title": "Ajustes del dispensador",
   "settings.prepare.hotWater.description": "Se detiene por peso si hay una báscula conectada; si no, usa volumen y tiempo.",
+  "settings.prepare.milkAssist": "Milk Assist",
+  "settings.prepare.milkAssistHint": "Muestra la píldora de leche en la tarjeta de vapor. Se guarda en este dispositivo; calibra desde la píldora.",
   "settings.clean.groupHead.eyebrow": "Grupo",
   "settings.clean.groupHead.title": "Enjuague rápido",
   "settings.clean.groupHead.description": "Se guarda en el flujo de trabajo activo de Decaid y se aplica a la máquina por esa única vía.",

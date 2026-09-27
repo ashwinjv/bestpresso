@@ -112,6 +112,8 @@ export const settingsEn = {
   'settings.prepare.steam.temperatureHint': 'Off, or {min}–{max}{unit}',
   'settings.prepare.hotWater.title': 'Dispenser defaults',
   'settings.prepare.hotWater.description': 'Automatically stops by weight when a scale is connected; otherwise uses volume and time.',
+  'settings.prepare.milkAssist': 'Milk Assist',
+  'settings.prepare.milkAssistHint': 'Show the milk pill on the steam card. Stored on this device; calibrate from the pill.',
   'settings.clean.groupHead.eyebrow': 'Group head',
   'settings.clean.groupHead.title': 'Quick flush',
   'settings.clean.groupHead.description': 'Stored in the active Decaid workflow and applied to the machine through that single path.',

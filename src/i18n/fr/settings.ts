@@ -119,6 +119,8 @@ export const settings = {
   "settings.prepare.steam.temperatureHint": "Désactivé, ou {min}–{max}{unit}",
   "settings.prepare.hotWater.title": "Réglages d’eau chaude par défaut",
   "settings.prepare.hotWater.description": "S’arrête automatiquement selon le poids si une balance est connectée ; sinon selon le volume et la durée.",
+  "settings.prepare.milkAssist": "Milk Assist",
+  "settings.prepare.milkAssistHint": "Affiche la pastille lait sur la carte vapeur. Enregistré sur cet appareil ; calibration depuis la pastille.",
   "settings.clean.groupHead.eyebrow": "Groupe d’extraction",
   "settings.clean.groupHead.title": "Rinçage rapide",
   "settings.clean.groupHead.description": "Enregistrés dans le flux de travail Decaid actif et appliqués à la machine par cette voie unique.",

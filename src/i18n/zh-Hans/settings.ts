@@ -119,6 +119,8 @@ export const settings = {
   "settings.prepare.steam.temperatureHint": "关闭，或 {min}–{max}{unit}",
   "settings.prepare.hotWater.title": "热水默认值",
   "settings.prepare.hotWater.description": "连接电子秤时按重量自动停止；未连接时则使用水量与时间限制。",
+  "settings.prepare.milkAssist": "Milk Assist",
+  "settings.prepare.milkAssistHint": "在蒸汽卡片上显示牛奶胶囊。仅保存在本设备；请通过胶囊校准。",
   "settings.clean.groupHead.eyebrow": "冲煮头",
   "settings.clean.groupHead.title": "快速冲洗",
   "settings.clean.groupHead.description": "保存于当前的 Decaid 工作流程，并统一通过此流程应用到机器。",

@@ -115,6 +115,8 @@ export const settingsDe = {
   'settings.prepare.steam.temperatureHint': 'Aus oder {min}–{max}{unit}',
   'settings.prepare.hotWater.title': 'Ausgabe-Standardwerte',
   'settings.prepare.hotWater.description': 'Stoppt automatisch nach Gewicht, wenn eine Waage verbunden ist; sonst nach Volumen und Zeit.',
+  'settings.prepare.milkAssist': 'Milk Assist',
+  'settings.prepare.milkAssistHint': 'Zeigt die Milch-Leiste auf der Dampfkarte. Auf diesem Gerät gespeichert; Kalibrierung über die Leiste.',
   'settings.clean.groupHead.eyebrow': 'Brühgruppe',
   'settings.clean.groupHead.title': 'Schnellspülung',
   'settings.clean.groupHead.description': 'Wird im aktiven Decaid-Workflow gespeichert und über diesen einen Weg auf die Maschine angewendet.',
