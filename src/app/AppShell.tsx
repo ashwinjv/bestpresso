@@ -115,11 +115,26 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
   const scaleGrams = Number.isFinite(scaleGramsRaw) ? scaleGramsRaw : undefined
   const scaleConnected = scale?.status === 'connected'
   const [milkSaved, setMilkSaved] = useState<{ seconds: number; atMilkGrams: number } | null>(null)
+  const [milkPending, setMilkPending] = useState<{ seconds: number; atMilkGrams: number } | null>(null)
+  const sawSavingRef = useRef(false)
   const pillState = milkAssistPillState({ enabled: milkAssist.enabled, scaleConnected, scaleGrams, jugGrams: milkAssist.jugGrams, calGrams: milkAssist.calGrams, calSeconds: milkAssist.calSeconds })
   const currentMilkGrams = milkGramsOnScale(scaleGrams, milkAssist.jugGrams)
   useEffect(() => {
     if (milkSaved && (currentMilkGrams === null || !savedStateHolds(milkSaved.atMilkGrams, currentMilkGrams))) setMilkSaved(null)
   }, [currentMilkGrams, milkSaved])
+  useEffect(() => {
+    if (!milkPending) {
+      sawSavingRef.current = false
+      return
+    }
+    if (settingFeedback?.status === 'saving') sawSavingRef.current = true
+    else if (sawSavingRef.current && settingFeedback?.status === 'saved') {
+      setMilkSaved(milkPending)
+      setMilkPending(null)
+    } else if (sawSavingRef.current && settingFeedback?.status === 'error') {
+      setMilkPending(null)
+    }
+  }, [settingFeedback, milkPending])
   const [milkAssistSurface, setMilkAssistSurface] = useState<'none' | 'dialog' | 'wizard'>('none')
   const steamOperationActive = utilityOperation?.kind === 'steam'
   const steamElapsedSeconds = steamOperationActive ? utilityOperation.elapsedMs / 1000 : 0
@@ -140,8 +155,8 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
     savedSeconds: milkSaved?.seconds ?? null,
     disabled: settingsDisabled,
     onSet: (seconds) => {
+      if (pillState.kind === 'live') setMilkPending({ seconds, atMilkGrams: pillState.milkGrams })
       updateSetting('steamDuration', seconds)
-      if (pillState.kind === 'live') setMilkSaved({ seconds, atMilkGrams: pillState.milkGrams })
     },
     onCalibrate: () => setMilkAssistSurface(milkAssist.calGrams === null || milkAssist.jugGrams === null ? 'wizard' : 'dialog'),
   }
