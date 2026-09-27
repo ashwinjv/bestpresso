@@ -21,6 +21,7 @@ import { MachineUtilityCard } from '../features/machine/MachineUtilityCard'
 import { LiveUtilityOperationOverlay } from '../features/machine/LiveUtilityOperationOverlay'
 import { useMilkAssist } from '../features/machine/milkAssistStore'
 import type { MilkAssistPillProps } from '../features/machine/MilkAssistPill'
+import { MilkAssistDialog } from '../features/machine/MilkAssistDialog'
 import { ScaleDevicePicker } from '../features/machine/ScaleDevicePicker'
 import { SleepWakeScreen } from '../features/sleep/SleepWakeScreen'
 
@@ -119,7 +120,6 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
     if (milkSaved && (currentMilkGrams === null || !savedStateHolds(milkSaved.atMilkGrams, currentMilkGrams))) setMilkSaved(null)
   }, [currentMilkGrams, milkSaved])
   const [milkAssistSurface, setMilkAssistSurface] = useState<'none' | 'dialog' | 'wizard'>('none')
-  void milkAssistSurface
   const milkAssistPill: MilkAssistPillProps | undefined = pillState.kind === 'hidden' ? undefined : {
     state: pillState,
     savedSeconds: milkSaved?.seconds ?? null,
@@ -143,5 +143,6 @@ export function AppShell({ historyEntry, model, allProfiles, liveBrew, utilityOp
     {utilityOperation && <LiveUtilityOperationOverlay operation={utilityOperation} />}
     <ScaleDevicePicker devices={availableScales} pendingDeviceId={scaleConnectPendingId} onSelect={onConnectScale} onDismiss={onDismissScalePicker} />
     {cleaningPickerOpen && <CleaningSequencePicker profiles={cleaningProfiles} pending={cleaningStartPending} preparedProfileId={cleaningPreparedProfileId} onPrepare={onPrepareCleaning} onDismiss={dismissCleaningPicker} />}
+    {milkAssistSurface === 'dialog' && <MilkAssistDialog onClose={() => setMilkAssistSurface('none')} onRecalibrate={() => setMilkAssistSurface('wizard')} />}
   </main>
 }

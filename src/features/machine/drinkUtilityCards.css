@@ -187,3 +187,26 @@ html[data-animations="off"] .milk-pill__dot {animation:none}
 [data-theme="light"] .milk-pill__set--saved {border-color:#589672;color:#175f3c;background:#d4e8d7}
 [data-theme="light"] .milk-pill__tuner,[data-theme="light"] .milk-pill__cta {background:#e0e7dc;color:#375040;border-color:#bdcdbc}
 [data-theme="light"] .milk-pill__tuner:hover:not(:disabled) {background:#d1dace}
+.milk-dialog-backdrop {position:fixed;inset:0;z-index:8500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
+.milk-dialog {width:min(420px,92vw);padding:24px 28px;border-radius:24px;background:linear-gradient(145deg,rgba(77,66,66,.97),rgba(54,47,47,.97));outline:1px solid rgba(255,255,255,.09)}
+.milk-dialog h2 {margin:0 0 4px;color:#ef8686;font-size:16px;font-weight:600}
+.milk-dialog>p {margin:0 0 14px;color:#a9a29a;font-size:13.5px}
+.milk-dialog__row {display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-top:1px solid rgba(255,255,255,.1)}
+.milk-dialog__row span {color:#a9a29a;font-size:14px}
+.milk-dialog__row strong {color:#f5f5f5;font-size:19px;font-weight:300;font-variant-numeric:tabular-nums}
+.milk-dialog__row strong small {margin-left:2px;font-size:13px;color:#bdb6ae}
+.milk-dialog__actions {display:flex;gap:12px;margin-top:16px}
+.milk-dialog__close {flex:1;height:50px;border:1px solid #747474;border-radius:25px;color:#c6c6c6;background:rgba(70,70,70,.55);font-size:15px;font-weight:600}
+.milk-dialog__recalibrate {flex:1.4;height:50px;border:2px solid #3dc078;border-radius:25px;color:#53d68e;background:rgba(61,192,120,.14);font-size:15px;font-weight:650}
+.milk-dialog__close:focus-visible,.milk-dialog__recalibrate:focus-visible {outline:2px solid #d0d0d0;outline-offset:3px}
+[data-theme="light"] .milk-dialog-backdrop {background:rgba(35,46,39,.32)}
+[data-theme="light"] .milk-dialog {background:linear-gradient(145deg,#ffffff,#f4f3ee);outline:1px solid #c8d3c4}
+[data-theme="light"] .milk-dialog h2 {color:#9d3430}
+[data-theme="light"] .milk-dialog>p {color:#697766}
+[data-theme="light"] .milk-dialog__row {border-top:1px solid #e8ece5}
+[data-theme="light"] .milk-dialog__row span {color:#697766}
+[data-theme="light"] .milk-dialog__row strong {color:#34463a}
+[data-theme="light"] .milk-dialog__row strong small {color:#7a847a}
+[data-theme="light"] .milk-dialog__close {border-color:#c4cdc3;color:#40523f;background:#e0e7dc}
+[data-theme="light"] .milk-dialog__recalibrate {border-color:#589672;color:#175f3c;background:#d4e8d7}
+[data-theme="light"] .milk-dialog__close:focus-visible,.milk-dialog__recalibrate:focus-visible {outline:2px solid #467b51}
